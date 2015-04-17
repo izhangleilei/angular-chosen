@@ -46,8 +46,12 @@
           startLoading = function() {
             return element.addClass('loading').attr('disabled', true).trigger('chosen:updated');
           };
-          stopLoading = function() {
-            return element.removeClass('loading').attr('disabled', element.context.disabled).trigger('chosen:updated');
+          stopLoading = function(disabled) {
+            if (disabled) {
+              return element.removeClass('loading').attr('disabled', element.context.disabled).trigger('chosen:updated');
+            } else {
+              return element.removeClass('loading').attr('disabled', false).trigger('chosen:updated');
+            }
           };
           chosen = null;
           defaultText = null;
@@ -98,7 +102,11 @@
                   if (empty) {
                     removeEmptyMessage();
                   }
-                  stopLoading();
+                  if (angular.isUndefined(attr.disabled)) {
+                    stopLoading(false);
+                  } else {
+                    stopLoading(attr.disabled);
+                  }
                   if (isEmpty(newVal)) {
                     return disableWithMessage();
                   }

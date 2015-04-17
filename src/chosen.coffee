@@ -50,7 +50,11 @@ angular.module('localytics.directives').directive 'chosen', ['$timeout', ($timeo
           options[snakeCase(key)] = scope.$eval(value)
 
     startLoading = -> element.addClass('loading').attr('disabled', true).trigger('chosen:updated')
-    stopLoading = -> element.removeClass('loading').attr('disabled', element.context.disabled).trigger('chosen:updated')
+    stopLoading = (disabled) ->
+      if disabled
+        element.removeClass('loading').attr('disabled', element.context.disabled).trigger('chosen:updated')
+      else
+        element.removeClass('loading').attr('disabled', false).trigger('chosen:updated')
 
     chosen = null
     defaultText = null
@@ -104,7 +108,10 @@ angular.module('localytics.directives').directive 'chosen', ['$timeout', ($timeo
             startLoading()
           else
             removeEmptyMessage() if empty
-            stopLoading()
+            if angular.isUndefined(attr.disabled)
+              stopLoading(false)
+            else
+              stopLoading(attr.disabled)
             disableWithMessage() if isEmpty(newVal)
         )
 
