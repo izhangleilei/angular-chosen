@@ -49,6 +49,9 @@ angular.module('localytics.directives').directive 'chosen', ['$timeout', ($timeo
         else
           options[snakeCase(key)] = scope.$eval(value)
 
+    if angular.isUndefined(options['width'])
+      options['width'] = '100%'
+
     startLoading = -> element.addClass('loading').attr('disabled', true).trigger('chosen:updated')
     stopLoading = (disabled) ->
       if disabled

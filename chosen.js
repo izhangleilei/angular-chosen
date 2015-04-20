@@ -43,6 +43,9 @@
               }
             }
           });
+          if (angular.isUndefined(options['width'])) {
+            options['width'] = '100%';
+          }
           startLoading = function() {
             return element.addClass('loading').attr('disabled', true).trigger('chosen:updated');
           };
